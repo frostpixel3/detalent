@@ -17,3 +17,9 @@ model User {
   lastName  String?
   email     String?
 }
+
+model WalletAuthNonce {
+  id      String @id @default(uuid())
+  address String @unique
+  nonce   String
+}
