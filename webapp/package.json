@@ -12,6 +12,7 @@
   "dependencies": {
     "@tanstack/react-query": "^5.62.0",
     "@tanstack/react-query-devtools": "^5.62.0",
+    "axios": "^1.7.8",
     "localforage": "^1.10.0",
     "match-sorter": "^8.0.0",
     "react": "^18.2.0",
