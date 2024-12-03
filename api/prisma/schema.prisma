@@ -16,10 +16,19 @@ model User {
   firstName String?
   lastName  String?
   email     String?
+
+  authTokens AuthTokens?
 }
 
 model WalletAuthNonce {
   id      String @id @default(uuid())
   address String @unique
   nonce   String
+}
+
+model AuthTokens {
+  id        String @id @default(uuid())
+  userId    String @unique
+  user      User   @relation(fields: [userId], references: [id])
+  token     String
 }

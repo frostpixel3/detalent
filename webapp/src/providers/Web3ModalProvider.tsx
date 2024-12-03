@@ -1,15 +1,16 @@
-import { createWeb3Modal } from '@web3modal/wagmi/react'
-import { defaultWagmiConfig } from '@web3modal/wagmi/react/config'
+import { createAppKit } from '@reown/appkit/react'
+import { Ethers5Adapter } from '@reown/appkit-adapter-ethers5'
 
-import { WagmiProvider } from 'wagmi'
-import { localhost } from 'wagmi/chains'
+
+import { WagmiProvider, createConfig, http } from 'wagmi'
+import { mainnet } from 'wagmi/chains'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 // 0. Setup queryClient
 const queryClient = new QueryClient()
 
 // 1. Get projectId from https://cloud.walletconnect.com
-const chains = [localhost] as const
+const chains = [mainnet] as const
 const projectId = import.meta.env.VITE_WEB3_MODAL_PROJECT_ID as string;
 
 // 2. Create wagmiConfig
@@ -20,23 +21,28 @@ const metadata = {
   icons: ['https://avatars.githubusercontent.com/u/37784886']
 }
 
-const config = defaultWagmiConfig({
-  chains,
-  projectId,
-  metadata,
+const wagmiConfig = createConfig({
+  chains: [mainnet],
+  transports: {
+    [mainnet.id]: http(),
+  },
 })
 
 // 3. Create modal
-createWeb3Modal({
-  wagmiConfig: config,
+createAppKit({
+  adapters: [new Ethers5Adapter()],
+  metadata: metadata,
+  networks: [mainnet],
   projectId,
-  enableAnalytics: true,
-  enableOnramp: true,
+  features: {
+    analytics: true // Optional - defaults to your Cloud configuration
+  }
 })
+
 
 export function Web3ModalProvider({ children }: { children: React.ReactNode }) {
   return (
-    <WagmiProvider config={config}>
+    <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </WagmiProvider>
   )
