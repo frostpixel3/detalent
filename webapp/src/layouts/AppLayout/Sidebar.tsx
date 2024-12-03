@@ -1,25 +1,49 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { Cog6ToothIcon, HomeIcon, XMarkIcon } from "@heroicons/react/24/solid";
+import { BriefcaseIcon, BuildingStorefrontIcon, ChatBubbleLeftRightIcon, Cog6ToothIcon, HomeIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import React, { FC, Fragment } from "react";
 import Logo from "../../assets/logo.png";
 import classNames from "classnames";
 import { Link, useLocation } from "react-router-dom";
+import { AccountInfo } from "../../components/AccountInfo";
 
 export interface SidebarProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const navigation = [
+const navigationTalent = [
   {
     name: "Dashboard",
     path: "/app",
     icon: HomeIcon,
   },
   {
-    name: "Settings",
+    name: 'Your Services (2)',
+    path: '/app/services',
+    icon: BuildingStorefrontIcon,
+  },
+  {
+    name: 'Projects In Progress (2)',
+    path: '/app/services',
+    icon: BriefcaseIcon,
+  },
+  {
+    name: <>Messages <div className="badge badge-error ml-2 text-white">+99</div></>,
     path: "/app/settings",
-    icon: Cog6ToothIcon,
+    icon: ChatBubbleLeftRightIcon,
+  },
+];
+
+const navigationCustomer = [
+  {
+    name: 'Projects In Progress (2)',
+    path: '/app/services',
+    icon: BriefcaseIcon,
+  },
+  {
+    name: "Messages (2)",
+    path: "/app/settings",
+    icon: ChatBubbleLeftRightIcon,
   },
 ];
 
@@ -32,29 +56,66 @@ export const Sidebar: FC<SidebarProps> = ({ open, setOpen }) => {
           <div className="flex-shrink-0 flex items-center px-4">
             <img className="h-8 w-auto" src={Logo} alt="Workflow" />
           </div>
-          <nav className="mt-5 px-2 space-y-1">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                to={item.path}
-                className={classNames(
-                  "group flex items-center px-2 py-2 text-base font-medium rounded-md",
-                  item.path === pathname
-                    ? "bg-primary-focus text-primary-content"
-                    : "text-primary-content hover:bg-primary-focus/40 hover:text-primary-content"
-                )}
-              >
-                <item.icon
-                  className="mr-4 flex-shrink-0 h-6 w-6"
-                  aria-hidden="true"
-                />
-                {item.name}
-              </Link>
-            ))}
-          </nav>
+          <div className="mt-5">
+            <label className="text-white text-sm font-semibold opacity-40 ml-2">Talent Center</label>
+            <nav className="px-2 space-y-1 mt-2">
+              {navigationTalent.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.path}
+                  className={classNames(
+                    "group flex items-center px-2 py-2 text-base font-medium rounded-md",
+                    item.path === pathname
+                      ? "bg-primary-focus text-primary-content"
+                      : "text-primary-content hover:bg-primary-focus/40 hover:text-primary-content"
+                  )}
+                >
+                  <item.icon
+                    className="mr-4 flex-shrink-0 h-6 w-6"
+                    aria-hidden="true"
+                  />
+                  {item.name}
+                </Link>
+              ))}
+            </nav>
+          </div>
+          <div className="mt-5">
+            <label className="text-white text-sm font-semibold opacity-40 ml-2">Customer Center</label>
+            <nav className="px-2 space-y-1 mt-2">
+              {navigationCustomer.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.path}
+                  className={classNames(
+                    "group flex items-center px-2 py-2 text-base font-medium rounded-md",
+                    item.path === pathname
+                      ? "bg-primary-focus text-primary-content"
+                      : "text-primary-content hover:bg-primary-focus/40 hover:text-primary-content"
+                  )}
+                >
+                  <item.icon
+                    className="mr-4 flex-shrink-0 h-6 w-6"
+                    aria-hidden="true"
+                  />
+                  {item.name}
+                </Link>
+              ))}
+            </nav>
+          </div>
         </div>
-        <div className="flex-shrink-0 flex bg-primary-focus p-4 text-white">
-          TODO: Add User Info
+        <div className="flex-shrink-0 flex bg-primary-focus p-4 w-full">
+        <div className="dropdown dropdown-right dropdown-end w-full">
+          <div tabIndex={0} role="button" className="btn btn-ghost w-full justify-start">
+            <AccountInfo
+              address="0x1234567890abcdef1234567890abcdef12345678"
+              addressTextStyle="text-white text-sm text-left"
+            />
+          </div>
+          <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+            <li><a>Item 1</a></li>
+            <li><a>Item 2</a></li>
+          </ul>
+        </div>
         </div>
       </>
     );

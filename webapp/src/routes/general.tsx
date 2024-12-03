@@ -6,6 +6,7 @@ import { DeployPage } from "../pages/DeployPage.tsx";
 import { ConfigureContractPage } from "../pages/ConfigureContractPage.tsx";
 import { IndexPage } from "../pages/Index";
 import { AppIndexPage } from "../pages/app/Index";
+import { AppTalentServicesIndexPage } from "../pages/app/talent/services/Index.tsx";
 
 export const general: RouteObject[] = [
   // ROUTES - START
@@ -25,5 +26,9 @@ export const general: RouteObject[] = [
     path: PATHS.app,
     element: <AppIndexPage />,
   },
+  {
+    path: '/app/talent/services',
+    element: <AppTalentServicesIndexPage />
+  }
   // ROUTES - END
 ];
