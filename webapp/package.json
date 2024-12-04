@@ -37,6 +37,7 @@
     "sort-by": "^1.2.0",
     "viem": "^2.21.53",
     "wagmi": "^2.13.2",
+    "web3.storage": "^4.5.5",
     "yup": "^1.4.0"
   },
   "devDependencies": {
