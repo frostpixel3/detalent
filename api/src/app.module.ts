@@ -2,6 +2,7 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { UsersModule } from './users/users.module';
 import { LoggedUserMiddleware } from './logged-user.middleware';
 import { PrismaService } from './prisma.service';
+import { TalentsController } from './talents/talents.controller';
 
 // IMPORTS - START
 // IMPORTS - END
@@ -15,7 +16,7 @@ import { PrismaService } from './prisma.service';
   controllers: [
     // MODULE CONTROLLERS - START
     // MODULE CONTROLLERS - END
-  ],
+  TalentsController],
   providers: [
     // MODULE PROVIDERS - START
     PrismaService,

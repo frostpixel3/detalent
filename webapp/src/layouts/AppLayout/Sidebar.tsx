@@ -19,19 +19,19 @@ const navigationTalent = [
   },
   {
     name: 'Your Services (2)',
-    path: '/app/services',
+    path: '/app/talent/services',
     icon: BuildingStorefrontIcon,
   },
-  {
-    name: 'Projects In Progress (2)',
-    path: '/app/services',
-    icon: BriefcaseIcon,
-  },
-  {
-    name: <>Messages <div className="badge badge-error ml-2 text-white">+99</div></>,
-    path: "/app/settings",
-    icon: ChatBubbleLeftRightIcon,
-  },
+  // {
+  //   name: 'Projects In Progress (2)',
+  //   path: '/app/services',
+  //   icon: BriefcaseIcon,
+  // },
+  // {
+  //   name: <>Messages <div className="badge badge-error ml-2 text-white">+99</div></>,
+  //   path: "/app/settings",
+  //   icon: ChatBubbleLeftRightIcon,
+  // },
 ];
 
 const navigationCustomer = [

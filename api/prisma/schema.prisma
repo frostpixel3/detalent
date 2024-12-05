@@ -18,6 +18,7 @@ model User {
   email     String?
 
   authTokens AuthTokens?
+  services   TalentService[]
 }
 
 model WalletAuthNonce {
@@ -27,8 +28,18 @@ model WalletAuthNonce {
 }
 
 model AuthTokens {
-  id        String @id @default(uuid())
-  userId    String @unique
-  user      User   @relation(fields: [userId], references: [id])
-  token     String
+  id     String @id @default(uuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
+  token  String
+}
+
+model TalentService {
+  id          String @id @default(uuid())
+  name        String
+  description String
+  coverImage  String
+
+  talentId String
+  talent   User   @relation(fields: [talentId], references: [id])
 }

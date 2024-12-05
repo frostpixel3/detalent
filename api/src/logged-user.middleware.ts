@@ -19,7 +19,6 @@ export class LoggedUserMiddleware implements NestMiddleware {
           },
         },
       });
-      console.log(user);
       if (user) {
         req.user = user;
       }

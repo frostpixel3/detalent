@@ -1,24 +1,20 @@
 import { FC } from "react";
 import { RatingView } from "./RatingView";
 import { AccountInfo } from "./AccountInfo";
+import { User } from "../types";
 
 export interface ServiceListingCardProps {
   name: string;
   coverImageUrl: string;
   description?: string;
   rating?: number;
-  owner: {
-    address: string;
-    name: string;
-    avatarUrl: string;
-    verified?: boolean;
-  }
+  talent?: User;
 }
 
 export const ServiceListingCard: FC<ServiceListingCardProps> = ({
   name,
   coverImageUrl,
-  owner,
+  talent,
   description,
   rating,
 }) => {
@@ -53,16 +49,18 @@ export const ServiceListingCard: FC<ServiceListingCardProps> = ({
             {description}
           </div>
         </div>
-        <div className="border-t">
-          <div className="p-4">
-            <AccountInfo
-              address={owner.address}
-              label={owner.name}
-              avatarSize={24}
-              verified={owner.verified}
-            />
+        {talent && (
+          <div className="border-t">
+            <div className="p-4">
+              <AccountInfo
+                address={talent?.address}
+                label={talent.firstName ?? undefined}
+                avatarSize={24}
+                verified={true}
+              />
+            </div>
           </div>
-        </div>
+        )}
         <p>
         </p>
       </div>

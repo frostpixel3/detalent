@@ -9,9 +9,10 @@ export interface AppLayoutProps {
   title?: string;
   toolbar?: React.ReactNode;
   children?: React.ReactNode;
+  noPadding?: boolean;
 }
 
-export const AppLayout: FC<AppLayoutProps> = ({ children, title, toolbar }) => {
+export const AppLayout: FC<AppLayoutProps> = ({ children, title, toolbar, noPadding }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
     <div className="h-screen flex overflow-hidden bg-base-200">
@@ -28,13 +29,19 @@ export const AppLayout: FC<AppLayoutProps> = ({ children, title, toolbar }) => {
         </div>
         <main className="flex-1 relative z-0 overflow-y-auto focus:outline-none">
           {title && <Header title={title} toolbar={toolbar ?? null} />}
-          <div className="py-6">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-              <div className="py-4">
-                {children}
+          {noPadding ? (
+            <div>
+              {children}
+            </div>
+          ) : (
+            <div className="py-6">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+                <div className="py-4">
+                  {children}
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </main>
       </div>
     </div>

@@ -2,32 +2,38 @@ import { FC } from 'react'
 import { AppLayout } from '../../../../layouts/AppLayout'
 import { ServiceListingCard } from '../../../../components/ServiceListingCard'
 import { PlusIcon } from '@heroicons/react/24/solid'
+import { useQuery } from '@tanstack/react-query'
+import { getTalentServices } from '../../../../client/queries/talents'
+import { getCIDLink } from '../../../../utils/web3Storage'
+import { Link } from 'react-router-dom'
 
 export const AppTalentServicesIndexPage: FC = () => {
   const toolbar = (
     <div>
-      <button className="btn btn-primary">
+      <Link className="btn btn-primary" to="/app/talent/services/create">
         <PlusIcon className="h-5 w-5" />
         Create Service
-      </button>
+      </Link>
     </div>
-  )
+  );
+  const { data: talentServices } = useQuery({
+    queryKey: ['talentServices'],
+    queryFn: getTalentServices,
+  });
   return (
     <AppLayout title="Your Services" toolbar={toolbar}>
       <div>
-        <div className="grid grid-cols-3">
-            <div>
+        <div className="grid grid-cols-3 space-x-2">
+          {talentServices?.map((service) => (
+            <Link to={`/app/talent/services/${service.id}`} key={service.id}>
               <ServiceListingCard
-                coverImageUrl='https://images.unsplash.com/photo-1719937051058-63705ed35502?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-                name='Video Editing'
-                owner={{
-                  address: '0x1234',
-                  name: 'John Doe',
-                  avatarUrl: 'https://randomuser.me/api/port',
-                  verified: true,
-                }}
+                key={service.id}
+                coverImageUrl={getCIDLink(service.coverImage)}
+                name={service.name}
+                talent={service.talent}
               />
-          </div>
+            </Link>
+          ))}
         </div>
       </div>
     </AppLayout>
