@@ -3,6 +3,8 @@ import { UsersModule } from './users/users.module';
 import { LoggedUserMiddleware } from './logged-user.middleware';
 import { PrismaService } from './prisma.service';
 import { TalentsController } from './talents/talents.controller';
+import { PublicController } from './public/public.controller';
+import { CustomersController } from './customers/customers.controller';
 
 // IMPORTS - START
 // IMPORTS - END
@@ -15,8 +17,11 @@ import { TalentsController } from './talents/talents.controller';
   ],
   controllers: [
     // MODULE CONTROLLERS - START
+    TalentsController,
+    PublicController,
+    CustomersController,
     // MODULE CONTROLLERS - END
-  TalentsController],
+  ],
   providers: [
     // MODULE PROVIDERS - START
     PrismaService,

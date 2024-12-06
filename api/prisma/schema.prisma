@@ -10,6 +10,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Enums
+
+enum ProjectStatus {
+  QUOTING
+  WAITING_PAYMENT
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum MessageSender {
+  TALENT
+  CUSTOMER
+}
+
+// Models
+
 model User {
   id        String  @id @default(uuid())
   address   String  @unique
@@ -17,8 +34,9 @@ model User {
   lastName  String?
   email     String?
 
-  authTokens AuthTokens?
-  services   TalentService[]
+  authTokens           AuthTokens?
+  services             TalentService[]
+  TalentServiceProject TalentServiceProject[]
 }
 
 model WalletAuthNonce {
@@ -41,5 +59,28 @@ model TalentService {
   coverImage  String
 
   talentId String
-  talent   User   @relation(fields: [talentId], references: [id])
+  talent   User                   @relation(fields: [talentId], references: [id])
+  projects TalentServiceProject[]
+}
+
+model TalentServiceProject {
+  id              String        @id @default(uuid())
+  name            String
+  description     String
+  status          ProjectStatus @default(QUOTING)
+  talentServiceId String
+  talentService   TalentService @relation(fields: [talentServiceId], references: [id])
+
+  customerId String
+  customer   User                          @relation(fields: [customerId], references: [id])
+  messages   TalentServiceProjectMessage[]
+}
+
+model TalentServiceProjectMessage {
+  id                     String               @id @default(uuid())
+  talentServiceProjectId String
+  talentServiceProject   TalentServiceProject @relation(fields: [talentServiceProjectId], references: [id])
+  message                String
+  sender                 MessageSender
+  createdAt              DateTime             @default(now())
 }

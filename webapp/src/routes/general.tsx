@@ -9,6 +9,8 @@ import { AppIndexPage } from "../pages/app/Index";
 import { AppTalentServicesIndexPage } from "../pages/app/talent/services/Index.tsx";
 import { AppTalentServicesCreate } from "../pages/app/talent/services/Create.tsx";
 import { AppTalentServicesViewPage } from "../pages/app/talent/services/View.tsx";
+import { AppCustomerProjectsView } from "../pages/app/customer/projects/View.tsx";
+import { AppCustomerProjectsIndex } from "../pages/app/customer/projects/Index.tsx";
 
 export const general: RouteObject[] = [
   // ROUTES - START
@@ -39,6 +41,14 @@ export const general: RouteObject[] = [
   {
     path: '/app/talent/services/:id',
     element: <AppTalentServicesViewPage />
+  },
+  {
+    path: '/app/customer/projects',
+    element: <AppCustomerProjectsIndex />
+  },
+  {
+    path: '/app/customer/projects/:id',
+    element: <AppCustomerProjectsView />
   }
   // ROUTES - END
 ];

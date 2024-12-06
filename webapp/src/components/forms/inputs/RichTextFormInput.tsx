@@ -30,7 +30,6 @@ export const RichTextFormInput: FC<RichTextFormInputProps> = ({
             <RichText
               hasError={!!error}
               onChange={(value) => {
-                console.log(value);
                 onChange({ target: { value } })
               }}
               onBlur={() => onBlur()}
