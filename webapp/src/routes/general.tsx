@@ -12,6 +12,7 @@ import { AppTalentServicesViewPage } from "../pages/app/talent/services/View.tsx
 import { AppCustomerProjectsView } from "../pages/app/customer/projects/View.tsx";
 import { AppCustomerProjectsIndex } from "../pages/app/customer/projects/Index.tsx";
 import { AppTalentProjectsView } from "../pages/app/talent/projects/View.tsx";
+import { AppCustomerExplore } from "../pages/app/customer/Explore.tsx";
 
 export const general: RouteObject[] = [
   // ROUTES - START
@@ -54,6 +55,10 @@ export const general: RouteObject[] = [
   {
     path: '/app/customer/projects/:id',
     element: <AppCustomerProjectsView />
+  },
+  {
+    path: '/app/customer/explore',
+    element: <AppCustomerExplore />
   }
   // ROUTES - END
 ];

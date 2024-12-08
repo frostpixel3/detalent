@@ -18,6 +18,7 @@ export const AppTalentProjectsView: FC<AppTalentProjectsViewProps> = (props) => 
     queryKey: ['talentProject', id],
     queryFn: () => getTalentProject(id!),
     enabled: !!id,
+    refetchInterval: 1000,
   });
   const { data: messages, refetch } = useQuery({
     queryKey: ['talentProjectMessages', id],

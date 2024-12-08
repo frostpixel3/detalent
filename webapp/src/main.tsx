@@ -30,7 +30,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <ToastifyProvider>
           <QueryClientProvider client={queryClient}>
             <RouterProvider router={router} />
-            <ReactQueryDevtools initialIsOpen={false} />
+            {/* <ReactQueryDevtools initialIsOpen={false} /> */}
           </QueryClientProvider>
         </ToastifyProvider>
       </ContractContextProvider>

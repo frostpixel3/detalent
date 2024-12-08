@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { TalentServiceProject } from '../types'
 import { useCreatePaymentRequest } from '../hooks/useCreatePaymentRequest';
 import { Form } from './Form';
@@ -14,6 +14,7 @@ import { updateProjectInvoiceInfo } from '../client/mutations/talents';
 import { ProjectStatusLabel } from './forms/inputs/ProjectStatusLabel';
 import { ERC20 } from '../consts/erc20';
 import { usePayRequest } from '../hooks/usePayRequest';
+import { CheckCircleIcon } from '@heroicons/react/24/solid';
 
 export interface ProjectInfoProps {
   project?: TalentServiceProject;
@@ -33,8 +34,9 @@ const _generateDefaultDueDate = () => {
 }
 
 export const ProjectInfo: FC<ProjectInfoProps> = ({ project, mode }) => {
+  const [paying, setPaying] = useState(false);
   const createInvoiceForm = useForm<CreateInvoiceForm>();
-  const { request } = useCreatePaymentRequest(); 
+  const { request, loading: loadingCreateInvoice } = useCreatePaymentRequest();
   const updateInvoiceInfoMutation = useMutation({
     mutationKey: ['updateInvoiceInfo'],
     mutationFn: updateProjectInvoiceInfo,
@@ -65,6 +67,10 @@ export const ProjectInfo: FC<ProjectInfoProps> = ({ project, mode }) => {
       requestId: req.requestId,
       dueDate,
     });
+    const modal = document.getElementById('generate_invoice_request');
+    if (modal) {
+      (modal as HTMLDialogElement).close();
+    }
   }
 
   const onPayInvoiceClick = async () => {
@@ -72,11 +78,12 @@ export const ProjectInfo: FC<ProjectInfoProps> = ({ project, mode }) => {
       toast.error('Invoice not generated yet');
       return;
     }
+    setPaying(true);
     await payRequest({
       requestId: project.invoiceRequestId,
     });
   }
- 
+
   return (
     <div className="bg-white border-t">
       <div className="max-w-7xl pb-4 mx-auto sm:px-6 lg:px-8">
@@ -95,8 +102,14 @@ export const ProjectInfo: FC<ProjectInfoProps> = ({ project, mode }) => {
                 <div>
                   <div>Amount: {project.invoiceAmount} {ERC20.symbol}</div>
                   <div>Due Date: {project.invoiceDueDate}</div>
+                  {project.status === 'IN_PROGRESS' && (
+                    <div className="text-green-500 flex mt-2 font-bold">
+                      <CheckCircleIcon className="h-5 w-5 text-green-500 mr-1" />
+                      Paid
+                    </div>
+                  )}
                 </div>
-              ): (
+              ) : (
                 <div>
                   (Not Generated yet)
                 </div>
@@ -104,14 +117,16 @@ export const ProjectInfo: FC<ProjectInfoProps> = ({ project, mode }) => {
             </div>
             {mode === 'TALENT' && (
               <div>
-                <button className="btn mt-2" onClick={() => {
-                  const modal = document.getElementById('generate_invoice_request');
-                  if (modal) {
-                    (modal as HTMLDialogElement).showModal();
-                  }
-                }}>
-                  Generate Invoice
-                </button>
+                {project?.status !== 'IN_PROGRESS' && (
+                  <button className="btn mt-2" onClick={() => {
+                    const modal = document.getElementById('generate_invoice_request');
+                    if (modal) {
+                      (modal as HTMLDialogElement).showModal();
+                    }
+                  }}>
+                    Generate Invoice
+                  </button>
+                )}
                 <dialog id="generate_invoice_request" className="modal">
                   <div className="modal-box">
                     <form method="dialog">
@@ -121,7 +136,10 @@ export const ProjectInfo: FC<ProjectInfoProps> = ({ project, mode }) => {
                     <h3 className="font-bold text-lg">Generate Invoice</h3>
                     <Form form={createInvoiceForm} onSubmit={onSubmitCreateInvoiceForm}>
                       <NumberFormInput name="amount" label="Amount" />
-                      <button className="btn btn-primary w-full" type="submit">Generate Invoice</button>
+                      <button className="btn btn-primary w-full" type="submit">
+                        {loadingCreateInvoice && (<span className="loading loading-spinner"></span>)}
+                        {loadingCreateInvoice ? 'Generating Invoice...' : 'Generate Invoice'}
+                      </button>
                     </Form>
                   </div>
                 </dialog>
@@ -129,7 +147,8 @@ export const ProjectInfo: FC<ProjectInfoProps> = ({ project, mode }) => {
             )}
             {mode === 'CUSTOMER' && project?.status === 'WAITING_PAYMENT' && (
               <button className="btn btn-primary mt-2" onClick={() => onPayInvoiceClick()}>
-                Pay Invoice
+                {paying && (<span className="loading loading-spinner"></span>)}
+                {paying ? 'Paying Invoice...' : 'Pay Invoice'}
               </button>
             )}
           </div>

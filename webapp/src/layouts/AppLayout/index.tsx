@@ -5,6 +5,8 @@ import {
 import { Sidebar } from "./Sidebar";
 import { Header } from "./Header";
 import classNames from "classnames";
+import { Web3ConnectBox } from "../../components/Web3ConnectBox";
+import { useValidAuth } from "../../hooks/useValidAuth";
 
 export interface AppLayoutProps {
   title?: string;
@@ -16,6 +18,14 @@ export interface AppLayoutProps {
 
 export const AppLayout: FC<AppLayoutProps> = ({ children, title, toolbar, noPadding, noMainScroll }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const validAuth = useValidAuth();
+  if (!validAuth) {
+    return (
+      <div className="w-screen h-screen flex items-center justify-center">
+        <Web3ConnectBox />
+      </div>
+    )
+  }
   return (
     <div className="h-screen flex overflow-hidden bg-base-200">
       <Sidebar open={sidebarOpen} setOpen={setSidebarOpen} />

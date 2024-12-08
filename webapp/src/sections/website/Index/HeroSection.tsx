@@ -7,7 +7,7 @@ export interface HeroSectionProps { }
 export const HeroSection: FC<HeroSectionProps> = () => {
   return (
     <HeroSectionComp
-      logoSrc="https://place-hold.it/80x64/555"
+      logoSrc="/public/detalent-logo-black.png"
       badges={(
         <>
           <img src="https://img.shields.io/github/commit-activity/t/frostpixel3/detalent" alt="github commits" />
@@ -20,16 +20,16 @@ export const HeroSection: FC<HeroSectionProps> = () => {
       }}
       app={{
         version: "v1.0.0",
-        url: "/app",
+        url: "/app/customer/explore",
       }}
-      title="DeTalent - Empowering Freelancers with Web3"
+      title="deTalent - Empowering Freelancers with Web3"
       subtitle="A decentralized freelancing platform built on the Request Network"
-      appScreenshotSrc="https://place-hold.it/600x400/555"
+      appScreenshotSrc="/public/app-screenshot-1.png"
       actions={(
         <>
           <div className="mt-6">
             <Link
-              to="/app"
+              to="/app/customer/explore"
               className="btn btn-primary text-white"
             >
               Get Started

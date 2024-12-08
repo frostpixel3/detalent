@@ -22,7 +22,7 @@ const LABELS = {
 
 export const ProjectStatusLabel: FC<ProjectStatusLabelProps> = (props) => {
   return (
-    <div className={`badge ${LABELS[props.status ?? 'default'].className}`}>
+    <div className={`badge text-white ${LABELS[props.status ?? 'default'].className}`}>
       {LABELS[props.status ?? 'default'].label}
     </div>
   )

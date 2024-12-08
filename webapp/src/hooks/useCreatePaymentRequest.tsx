@@ -3,11 +3,13 @@
 import { Types, Utils } from "@requestnetwork/request-client.js";
 import { useRequestClient } from "./useRequestClient";
 import { ERC20 } from "../consts/erc20";
+import { useState } from "react";
 
 // TODO: Change those values after the Hackathon
 const NETWORK_NAME = 'sepolia';
 
 export const useCreatePaymentRequest = () => {
+  const [loading, setLoading] = useState(false);
   const requestClient = useRequestClient();
 
   const _convertDueDateToRequestFormat = (dueDate: string) => {
@@ -34,6 +36,7 @@ export const useCreatePaymentRequest = () => {
   }) => {
     const payeeIdentity = payeeAddress;
     const payerIdentity = payerAddress;
+    setLoading(true);
     const requestRes = await requestClient.createRequest({
       requestInfo: {
         currency: {
@@ -71,10 +74,12 @@ export const useCreatePaymentRequest = () => {
       },
     });
     const confirmedRequestData = await requestRes.waitForConfirmation();
+    setLoading(false);
     return confirmedRequestData;
   }
 
   return {
+    loading,
     request,
   }
 }

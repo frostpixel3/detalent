@@ -18,6 +18,7 @@ export const AppCustomerProjectsView: FC<AppCustomerProjectsViewProps> = (props)
     queryKey: ['customerProject', id],
     queryFn: () => getCustomerProject(id!),
     enabled: !!id,
+    refetchInterval: 1000,
   });
   const { data: messages, refetch } = useQuery({
     queryKey: ['customerProjectMessages', id],

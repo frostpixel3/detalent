@@ -1,10 +1,12 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { BriefcaseIcon, BuildingStorefrontIcon, ChatBubbleLeftRightIcon, Cog6ToothIcon, HomeIcon, XMarkIcon } from "@heroicons/react/24/solid";
+import { BriefcaseIcon, BuildingStorefrontIcon, MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import React, { FC, Fragment } from "react";
 import Logo from "../../assets/logo.png";
 import classNames from "classnames";
 import { Link, useLocation } from "react-router-dom";
 import { AccountInfo } from "../../components/AccountInfo";
+import { useAccount, useDisconnect, useWalletClient } from "wagmi";
+import { useAppKitProvider } from "@reown/appkit/react";
 
 export interface SidebarProps {
   open: boolean;
@@ -13,48 +15,40 @@ export interface SidebarProps {
 
 const navigationTalent = [
   {
-    name: "Dashboard",
-    path: "/app",
-    icon: HomeIcon,
-  },
-  {
-    name: 'Your Services (2)',
+    name: 'Your Services',
     path: '/app/talent/services',
     icon: BuildingStorefrontIcon,
   },
-  // {
-  //   name: 'Projects In Progress (2)',
-  //   path: '/app/services',
-  //   icon: BriefcaseIcon,
-  // },
-  // {
-  //   name: <>Messages <div className="badge badge-error ml-2 text-white">+99</div></>,
-  //   path: "/app/settings",
-  //   icon: ChatBubbleLeftRightIcon,
-  // },
 ];
-
+ 
 const navigationCustomer = [
   {
-    name: 'Projects In Progress (2)',
-    path: '/app/services',
-    icon: BriefcaseIcon,
+    name: 'Explore Talents',
+    path: '/app/customer/explore',
+    icon: MagnifyingGlassIcon,
   },
   {
-    name: "Messages (2)",
-    path: "/app/settings",
-    icon: ChatBubbleLeftRightIcon,
+    name: 'Projects In Progress',
+    path: '/app/customer/projects',
+    icon: BriefcaseIcon,
   },
 ];
 
 export const Sidebar: FC<SidebarProps> = ({ open, setOpen }) => {
+  const disconnect = useDisconnect();
   const { pathname } = useLocation();
+  const acc = useAccount();
+  const logout = async () => {
+    localStorage.removeItem('token');
+    await disconnect.disconnectAsync();
+    window.location.href = '/';
+  };
   const renderMenuContent = () => {
     return (
       <>
         <div className="flex-1 h-0 pt-5 pb-4 overflow-y-auto">
           <div className="flex-shrink-0 flex items-center px-4">
-            <img className="h-8 w-auto" src={Logo} alt="Workflow" />
+            <img className="h-5 w-auto" src="/public/detalent-logo-white.png" alt="Workflow" />
           </div>
           <div className="mt-5">
             <label className="text-white text-sm font-semibold opacity-40 ml-2">Talent Center</label>
@@ -107,13 +101,12 @@ export const Sidebar: FC<SidebarProps> = ({ open, setOpen }) => {
         <div className="dropdown dropdown-right dropdown-end w-full">
           <div tabIndex={0} role="button" className="btn btn-ghost w-full justify-start">
             <AccountInfo
-              address="0x1234567890abcdef1234567890abcdef12345678"
+              address={acc.address}
               addressTextStyle="text-white text-sm text-left"
             />
           </div>
           <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-            <li><a>Item 1</a></li>
-            <li><a>Item 2</a></li>
+            <li><a onClick={logout}>Logout</a></li>
           </ul>
         </div>
         </div>

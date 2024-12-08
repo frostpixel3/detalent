@@ -21,3 +21,8 @@ export const getTalentProjectMessages = async (id: string) => {
   const res = await api.get<Message[]>(`/talents/projects/${id}/messages`);
   return res.data;
 }
+
+export const getServiceProjects = async (id: string) => {
+  const res = await api.get<TalentServiceProject[]>(`/talents/services/${id}/projects`);
+  return res.data;
+}

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { FC, useId } from "react";
+import { FC, useId, useState } from "react";
 import { RatingView } from "./RatingView";
 import { AccountInfo } from "./AccountInfo";
 import { StartQuoteFormValues, User } from "../types";
@@ -12,6 +12,10 @@ import { TextFormInput } from "./forms/inputs/TextFormInput";
 import { useMutation } from "@tanstack/react-query";
 import { startQuote } from "../client/mutations/customers";
 import { useNavigate } from "react-router-dom";
+import { useValidAuth } from "../hooks/useValidAuth";
+import { Web3ConnectBox } from "./Web3ConnectBox";
+import { useAppKit } from "@reown/appkit/react";
+import classNames from "classnames";
 
 export interface ServiceListingCardProps {
   serviceId?: string;
@@ -35,6 +39,8 @@ export const ServiceListingCard: FC<ServiceListingCardProps> = ({
   const id = useId();
   const navigate = useNavigate();
   const quoteForm = useForm<StartQuoteFormValues>();
+  const validAuth = useValidAuth();
+  const [modalOpen, setModalOpen] = useState(false);
   const startQuoteMutation = useMutation({
     mutationKey: ['startQuote'],
     mutationFn: startQuote,
@@ -95,23 +101,36 @@ export const ServiceListingCard: FC<ServiceListingCardProps> = ({
         {showStartQuote && (
           <div>
             <div>
-              <button className="btn btn-primary w-full rounded-t btn-outline" onClick={()=> (document.getElementById(id) as HTMLDialogElement)?.showModal()}>
+              <button className="btn btn-primary w-full rounded-t btn-outline" onClick={()=> setModalOpen(true)}>
                 Start Quote
               </button>
             </div>
           </div>
         )}
-        <dialog id={id} className="modal">
+        <div className={classNames('modal', { 'modal-open': modalOpen })}>
           <div className="modal-box">
-            <h3 className="font-bold text-lg">Start a Quote</h3>
-            <p className="my-4">Service: <strong>{name}</strong></p>
-            <Form form={quoteForm} onSubmit={onQuoteFormSubmit}>
-              <TextFormInput label="Project Name" name="name" />
-              <RichTextFormInput label="Please, describe the service you need:" name="description" />
-              <button type="submit" className="btn btn-primary w-full mt-4">Submit</button>
-            </Form>
+            <button
+              className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+              onClick={() =>setModalOpen(false)}>
+                ✕
+            </button>
+            {validAuth ? (
+              <div>
+                <h3 className="font-bold text-lg">Start a Quote</h3>
+                <p className="my-4">Service: <strong>{name}</strong></p>
+                <Form form={quoteForm} onSubmit={onQuoteFormSubmit}>
+                  <TextFormInput label="Project Name" name="name" />
+                  <RichTextFormInput label="Please, describe the service you need:" name="description" />
+                  <button type="submit" className="btn btn-primary w-full mt-4">Submit</button>
+                </Form>
+              </div>
+            ) : (
+              <div className="p-4">
+                <Web3ConnectBox />
+              </div>
+            )}
           </div>
-        </dialog>
+        </div>
       </div>
     </div>
   );

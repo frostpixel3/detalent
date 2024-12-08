@@ -21,9 +21,9 @@ export const AppTalentServicesIndexPage: FC = () => {
     queryFn: getTalentServices,
   });
   return (
-    <AppLayout title="Your Services" toolbar={toolbar}>
-      <div>
-        <div className="grid grid-cols-3 space-x-2">
+    <AppLayout title="Your Services" toolbar={toolbar} noPadding>
+      <div className="p-4">
+        <div className="grid grid-cols-4 space-x-2">
           {talentServices?.map((service) => (
             <Link to={`/app/talent/services/${service.id}`} key={service.id}>
               <ServiceListingCard

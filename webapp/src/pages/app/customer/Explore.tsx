@@ -1,14 +1,15 @@
-import { useQuery } from '@tanstack/react-query'
-import { FC } from 'react'
+import React, { FC } from 'react'
+import { AppLayout } from '../../../layouts/AppLayout'
 import { getPublicTalentServices } from '../../../client/queries/public'
-import { ServiceListingCard } from '../../../components/ServiceListingCard'
+import { useQuery } from '@tanstack/react-query'
 import { getCIDLink } from '../../../utils/web3Storage'
+import { ServiceListingCard } from '../../../components/ServiceListingCard'
 
-export interface TalentServicesSectionProps {
-
+export interface AppCustomerExploreProps {
+  
 }
 
-export const TalentServicesSection: FC<TalentServicesSectionProps> = (props) => {
+export const AppCustomerExplore: FC<AppCustomerExploreProps> = (props) => {
   const { data: publicTalentServices } = useQuery({
     queryKey: ['publicTalentServices'],
     queryFn: getPublicTalentServices
@@ -16,12 +17,8 @@ export const TalentServicesSection: FC<TalentServicesSectionProps> = (props) => 
   if (!publicTalentServices) {
     return null
   }
-  console.log(publicTalentServices);
   return (
-    <div className="lg:mx-auto lg:max-w-7xllg:items-start lg:px-8">
-      <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl text-center">
-        Services
-      </h2>
+    <AppLayout title="Explore Talents">
       <div className="grid grid-cols-4 gap-2 mt-8">
           {publicTalentServices?.map((service) => (
             <ServiceListingCard
@@ -34,6 +31,6 @@ export const TalentServicesSection: FC<TalentServicesSectionProps> = (props) => 
             />
           ))}
         </div>
-    </div>
+    </AppLayout>
   )
 }

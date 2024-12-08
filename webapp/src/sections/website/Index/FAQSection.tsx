@@ -8,8 +8,8 @@ export const FAQSection: FC<FAQSectionProps> = (props) => {
     <FAQSectionComp
       items={[
         {
-          question: "What is DeTalent?",
-          answer: "DeTalent is a decentralized freelancing platform that leverages blockchain technology to facilitate direct, peer-to-peer interactions between freelancers and clients."
+          question: "What is deTalent?",
+          answer: "deTalent is a decentralized freelancing platform that leverages blockchain technology to facilitate direct, peer-to-peer interactions between freelancers and clients."
         },
         {
           question: "How does the rating system work?",

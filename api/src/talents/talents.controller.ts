@@ -60,6 +60,22 @@ export class TalentsController {
     });
   }
 
+  @Get('/services/:id/projects')
+  @UseGuards(AuthGuard)
+  getServiceProjects(@Param('id') id: string, @LoggedUser() user: User) {
+    return this.prisma.talentServiceProject.findMany({
+      where: {
+        talentServiceId: id,
+        talentService: {
+          talentId: user.id,
+        },
+      },
+      include: {
+        customer: true,
+      },
+    });
+  }
+
   @Get('/projects/:id')
   @UseGuards(AuthGuard)
   async project(@LoggedUser() user: User, @Param('id') id: string) {

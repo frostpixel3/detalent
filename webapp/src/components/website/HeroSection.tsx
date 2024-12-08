@@ -33,7 +33,7 @@ export const HeroSection: FC<HeroSectionProps> = ({
       <div className="mx-auto max-w-md px-6 sm:max-w-3xl lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-24 lg:px-8">
         <div>
           <div>
-            <img className="h-16 w-auto" src={logoSrc} />
+            <img className="h-8 w-auto" src={logoSrc} />
           </div>
           <div className="mt-20">
             {badges && (

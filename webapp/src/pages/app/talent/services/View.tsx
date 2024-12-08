@@ -1,13 +1,13 @@
-import React, { FC, useState } from 'react'
+import { FC, useState } from 'react'
 import { AppLayout } from '../../../../layouts/AppLayout'
 import { RatingView } from '../../../../components/RatingView'
 import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { getTalentService } from '../../../../client/queries/talents';
-import { AccountInfo } from '../../../../components/AccountInfo';
+import { getServiceProjects, getTalentService } from '../../../../client/queries/talents';
 import { getCIDLink } from '../../../../utils/web3Storage';
 import { BriefcaseIcon, StarIcon } from '@heroicons/react/24/solid';
 import classNames from 'classnames';
+import { ProjectsTable } from '../../../../components/ProjectsTable';
 
 export interface AppTalentServicesViewPageProps {
 
@@ -21,28 +21,33 @@ export const AppTalentServicesViewPage: FC<AppTalentServicesViewPageProps> = (pr
     queryFn: () => getTalentService(id!),
     enabled: !!id,
   });
+  const { data: projects } = useQuery({
+    queryKey: ['talentProjects'],
+    queryFn: () => getServiceProjects(id!),
+    enabled: !!id,
+  });
   const [tab, setTab] = useState<'PROJECTS' | 'REVIEWS'>('PROJECTS');
   return (
     <AppLayout noPadding>
       <div className="bg-base-100 group">
-        <div className="w-full h-48 overflow-hidden">
+        <div className="w-full h-96 overflow-hidden">
           <div
-            className="w-full h-48 bg-no-repeat bg-cover transition-all duration-500 ease-in-out transform overflow-hidden"
+            className="w-full h-96 bg-no-repeat bg-cover bg-center transition-all duration-500 ease-in-out transform overflow-hidden"
             style={{
               backgroundImage: data?.coverImage && `url(${getCIDLink(data.coverImage)})`,
             }}
           />
         </div>
         <div className="breadcrumbs text-sm my-1 mx-4 opacity-75">
-        <ul>
-          <li>
-            <Link to="/app/talent/services">Your Services</Link>
-          </li>
-          <li>
-            {data?.name}
-          </li>
-        </ul>
-      </div>
+          <ul>
+            <li>
+              <Link to="/app/talent/services">Your Services</Link>
+            </li>
+            <li>
+              {data?.name}
+            </li>
+          </ul>
+        </div>
         <div>
           <div className="p-4 pt-1">
             {rating ? (
@@ -66,7 +71,7 @@ export const AppTalentServicesViewPage: FC<AppTalentServicesViewPageProps> = (pr
               <a className={classNames({ active: tab === 'PROJECTS' })} onClick={() => setTab('PROJECTS')}>
                 <BriefcaseIcon className="h-5 w-5" />
                 Projects
-                <span className="badge badge-sm">12</span>
+                <span className="badge badge-sm">{projects?.length}</span>
               </a>
             </li>
             <li>
@@ -77,6 +82,29 @@ export const AppTalentServicesViewPage: FC<AppTalentServicesViewPageProps> = (pr
               </a>
             </li>
           </ul>
+
+          <div>
+            {tab === 'PROJECTS' && (
+              projects?.length === 0 ? (
+                <div>
+                  <div className="p-24 text-center">
+                    <div className="text-sm text-gray-400">
+                      No projects yet
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <ProjectsTable projects={projects || []} mode="TALENT" />
+              )
+            )}
+            {tab === 'REVIEWS' && (
+              <div className="p-24 text-center">
+                <div className="text-sm text-gray-400">
+                  Coming soon
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </AppLayout>

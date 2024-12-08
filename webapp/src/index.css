@@ -10,3 +10,7 @@
 .ViewMenu.menu li > :not(ul):not(details):active, .menu li > :not(ul):not(details).active, .menu li > details > summary:active {
   background-color: #5773ff;
 }
+
+w3m-modal {
+  z-index: 9999;
+}
