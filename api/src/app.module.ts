@@ -5,6 +5,8 @@ import { PrismaService } from './prisma.service';
 import { TalentsController } from './talents/talents.controller';
 import { PublicController } from './public/public.controller';
 import { CustomersController } from './customers/customers.controller';
+import { ScheduleModule } from '@nestjs/schedule';
+
 
 // IMPORTS - START
 // IMPORTS - END
@@ -13,6 +15,7 @@ import { CustomersController } from './customers/customers.controller';
   imports: [
     // MODULE IMPORTS - START
     UsersModule,
+    ScheduleModule.forRoot(),
     // MODULE IMPORTS - END
   ],
   controllers: [

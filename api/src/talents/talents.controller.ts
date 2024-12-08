@@ -1,5 +1,15 @@
-import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
+import { Cron } from '@nestjs/schedule';
 import { Prisma, User } from '@prisma/client';
+import * as RequestNetworkLib from '@requestnetwork/request-client.js/';
 import { AuthGuard } from 'src/common/decorators/auth.guard';
 import { LoggedUser } from 'src/common/decorators/logged-user.decorator';
 import { PrismaService } from 'src/prisma.service';
@@ -161,5 +171,44 @@ export class TalentsController {
         status: 'WAITING_PAYMENT',
       },
     });
+  }
+
+  @Cron(process.env.CHECK_PAYMENT_CRON_INTERVAL)
+  async handleCron() {
+    console.log('Checking Payment...');
+    const requestClient = new RequestNetworkLib.RequestNetwork({
+      nodeConnectionConfig: {
+        baseURL: process.env.REQUEST_NETWORK_BASE_URL,
+      },
+    });
+
+    const projects = await this.prisma.talentServiceProject.findMany({
+      where: {
+        status: 'WAITING_PAYMENT',
+        invoiceRequestId: {
+          not: null,
+        },
+        invoiceDueDate: {
+          gte: new Date(),
+        },
+      },
+    });
+
+    for (const project of projects) {
+      console.log('Checking project', project.id);
+      const req = await requestClient.fromRequestId(project.invoiceRequestId);
+      const reqData = req.getData();
+      if (BigInt(reqData.balance.balance) >= BigInt(reqData.expectedAmount)) {
+        console.log('Payment received');
+        await this.prisma.talentServiceProject.update({
+          where: {
+            id: project.id,
+          },
+          data: {
+            status: 'IN_PROGRESS',
+          },
+        });
+      }
+    }
   }
 }

@@ -127,7 +127,7 @@ export const ProjectInfo: FC<ProjectInfoProps> = ({ project, mode }) => {
                 </dialog>
               </div>
             )}
-            {mode === 'CUSTOMER' && (
+            {mode === 'CUSTOMER' && project?.status === 'WAITING_PAYMENT' && (
               <button className="btn btn-primary mt-2" onClick={() => onPayInvoiceClick()}>
                 Pay Invoice
               </button>

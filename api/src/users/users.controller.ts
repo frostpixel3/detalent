@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { randomUUID, randomBytes } from 'crypto';
 import { PrismaService } from 'src/prisma.service';
-import { verifyMessage } from 'ethers';
+import { utils } from 'ethers';
 import { User } from '@prisma/client';
 
 const generateWalletConnectMessage = (
@@ -58,7 +58,7 @@ export class UsersController {
       throw new UnauthorizedException('Invalid address');
     }
 
-    const signerAddress = verifyMessage(
+    const signerAddress = utils.verifyMessage(
       generateWalletConnectMessage(body.address, walletAuthNonce.nonce),
       body.signedMessage,
     );

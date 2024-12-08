@@ -23,11 +23,16 @@
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
+    "@nestjs/schedule": "^4.1.1",
     "@nestjs/swagger": "^8.0.7",
     "@prisma/client": "^6.0.0",
-    "ethers": "^6.13.4",
+    "@requestnetwork/epk-signature": "^0.9.3",
+    "@requestnetwork/request-client.js": "^0.52.0",
+    "@requestnetwork/web3-signature": "^0.8.3",
+    "ethers": "^5.7.2",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "web3": "^4.16.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
