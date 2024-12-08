@@ -14,6 +14,10 @@ export const TalentServicesSection: FC<TalentServicesSectionProps> = (props) => 
     queryKey: ['publicTalentServices'],
     queryFn: getPublicTalentServices
   })
+  if (!publicTalentServices) {
+    return null
+  }
+  console.log(publicTalentServices);
   return (
     <div className="lg:mx-auto lg:max-w-7xllg:items-start lg:px-8">
       <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl text-center">

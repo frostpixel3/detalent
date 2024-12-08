@@ -74,6 +74,10 @@ model TalentServiceProject {
   customerId String
   customer   User                          @relation(fields: [customerId], references: [id])
   messages   TalentServiceProjectMessage[]
+
+  invoiceRequestId String?
+  invoiceAmount String?
+  invoiceDueDate DateTime?
 }
 
 model TalentServiceProjectMessage {

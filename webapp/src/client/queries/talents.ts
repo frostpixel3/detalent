@@ -1,4 +1,4 @@
-import { TalentService } from "../../types";
+import { Message, TalentService, TalentServiceProject } from "../../types";
 import { api } from "../api";
 
 export const getTalentServices = async () => {
@@ -8,5 +8,16 @@ export const getTalentServices = async () => {
 
 export const getTalentService = async (id: string) => {
   const res = await api.get<TalentService>(`/talents/services/${id}`);
+  return res.data;
+}
+
+
+export const getTalentProject = async (id: string) => {
+  const res = await api.get<TalentServiceProject>(`/talents/projects/${id}`);
+  return res.data;
+}
+
+export const getTalentProjectMessages = async (id: string) => {
+  const res = await api.get<Message[]>(`/talents/projects/${id}/messages`);
   return res.data;
 }

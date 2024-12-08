@@ -1,3 +1,8 @@
+/* eslint-disable no-var */
+// Workaround for the Request Network SDK work with the browser
+import nextTick from 'browser-next-tick';
+process.nextTick = nextTick;
+
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Web3ModalProvider } from "./providers/Web3ModalProvider";

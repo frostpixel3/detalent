@@ -27,7 +27,13 @@ export interface TalentServiceProject {
   status: string;
   talentServiceId: string;
   customerId: string;
+  customer: User;
   talentService: TalentService;
+
+  
+  invoiceRequestId?: string;
+  invoiceAmount?: string;
+  invoiceDueDate?: string;
 }
 
 export interface Message {

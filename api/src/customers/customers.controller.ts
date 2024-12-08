@@ -53,11 +53,13 @@ export class CustomersController {
 
   @Get('/projects/:id')
   @UseGuards(AuthGuard)
-  async project(@LoggedUser() user: User, id: string) {
+  async project(@LoggedUser() user: User, @Param('id') id: string) {
     return this.prisma.talentServiceProject.findFirst({
       where: {
         id,
-        customerId: user.id,
+        customer: {
+          id: user.id,
+        },
       },
       include: {
         talentService: {
@@ -65,17 +67,20 @@ export class CustomersController {
             talent: true,
           },
         },
+        customer: true,
       },
     });
   }
 
   @Get('/projects/:id/messages')
   @UseGuards(AuthGuard)
-  async projectMessages(@LoggedUser() user: User, id: string) {
+  async projectMessages(@LoggedUser() user: User, @Param('id') id: string) {
     const project = await this.prisma.talentServiceProject.findFirst({
       where: {
         id,
-        customerId: user.id,
+        customer: {
+          id: user.id,
+        },
       },
     });
     if (!project) {
@@ -99,6 +104,9 @@ export class CustomersController {
       where: {
         id,
         customerId: user.id,
+        status: {
+          in: ['QUOTING', 'WAITING_PAYMENT'],
+        },
       },
     });
     if (!project) {

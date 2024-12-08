@@ -3,25 +3,25 @@ import { FC } from 'react'
 import { AppLayout } from '../../../../layouts/AppLayout'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
-import { getCustomerProject, getCustomerProjectMessages } from '../../../../client/queries/customer'
-import { sendProjectMessage } from '../../../../client/mutations/customers'
+import { sendProjectMessage } from '../../../../client/mutations/talents'
 import { Chat } from '../../../../components/Chat'
 import { ProjectInfo } from '../../../../components/ProjectInfo'
+import { getTalentProject, getTalentProjectMessages } from '../../../../client/queries/talents'
 
-export interface AppCustomerProjectsViewProps {
+export interface AppTalentProjectsViewProps {
 
 }
 
-export const AppCustomerProjectsView: FC<AppCustomerProjectsViewProps> = (props) => {
+export const AppTalentProjectsView: FC<AppTalentProjectsViewProps> = (props) => {
   const { id } = useParams();
   const { data: project } = useQuery({
-    queryKey: ['customerProject', id],
-    queryFn: () => getCustomerProject(id!),
+    queryKey: ['talentProject', id],
+    queryFn: () => getTalentProject(id!),
     enabled: !!id,
   });
   const { data: messages, refetch } = useQuery({
-    queryKey: ['customerProjectMessages', id],
-    queryFn: () => getCustomerProjectMessages(id!),
+    queryKey: ['talentProjectMessages', id],
+    queryFn: () => getTalentProjectMessages(id!),
     enabled: !!id,
     refetchInterval: 1000,
   });
@@ -35,8 +35,8 @@ export const AppCustomerProjectsView: FC<AppCustomerProjectsViewProps> = (props)
   }
   return (
     <AppLayout title={project?.name} noPadding noMainScroll>
-      <ProjectInfo project={project} mode="CUSTOMER" />
-      <Chat onSendMessage={onSendMessage} messages={messages || []} sender="CUSTOMER" />
+      <ProjectInfo project={project} mode="TALENT" />
+      <Chat onSendMessage={onSendMessage} messages={messages || []} sender="TALENT" />
     </AppLayout>
   )
 }

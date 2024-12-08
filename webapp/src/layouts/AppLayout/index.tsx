@@ -4,15 +4,17 @@ import {
 } from "@heroicons/react/24/outline";
 import { Sidebar } from "./Sidebar";
 import { Header } from "./Header";
+import classNames from "classnames";
 
 export interface AppLayoutProps {
   title?: string;
   toolbar?: React.ReactNode;
   children?: React.ReactNode;
   noPadding?: boolean;
+  noMainScroll?: boolean;
 }
 
-export const AppLayout: FC<AppLayoutProps> = ({ children, title, toolbar, noPadding }) => {
+export const AppLayout: FC<AppLayoutProps> = ({ children, title, toolbar, noPadding, noMainScroll }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
     <div className="h-screen flex overflow-hidden bg-base-200">
@@ -27,7 +29,11 @@ export const AppLayout: FC<AppLayoutProps> = ({ children, title, toolbar, noPadd
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </button>
         </div>
-        <main className="flex-1 relative z-0 overflow-y-auto focus:outline-none">
+        <main className={
+          classNames("flex-1 relative z-0 overflow-y-auto focus:outline-none overflow-x-hidden", {
+            "overflow-y-auto": !noMainScroll,
+          })
+        }>
           {title && <Header title={title} toolbar={toolbar ?? null} />}
           {noPadding ? (
             <div>

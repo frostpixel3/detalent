@@ -1,6 +1,6 @@
 import { ChatBubbleLeftRightIcon } from '@heroicons/react/24/solid'
 import classNames from 'classnames'
-import { FC } from 'react'
+import { FC, useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form';
 import { Message } from '../types';
 import { Form } from './Form';
@@ -17,15 +17,29 @@ export const Chat: FC<ChatProps> = (props) => {
   const onSendMessage = (data: { message: string }) => {
     props.onSendMessage(data);
     sendMessageForm.reset();
+    // Scroll to bottom
+    chatListRef.current?.scrollTo({
+      top: chatListRef.current?.scrollHeight,
+      behavior: 'smooth',
+    });
   };
+  const chatListRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    // Scroll to bottom
+    chatListRef.current?.scrollTo({
+      top: chatListRef.current?.scrollHeight,
+      behavior: 'smooth',
+    });
+  }
+    , [props.messages]);
   return (
-    <div>
+    <div className="overflow-hidden">
       <div className="w-full border border-y p-4 bg-gray-50">
         <div className="flex">
           <ChatBubbleLeftRightIcon className="h-6 w-6 text-gray-400" /> Messages
         </div>
       </div>
-      <div className="h-[400px]">
+      <div className="overflow-y-auto mb-40 h-[calc(100vh-400px)]" ref={chatListRef}>
         {props.messages?.map((message) => (
           <div key={message.id} className="p-4">
             <div className={classNames('chat', {
